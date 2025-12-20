@@ -1,0 +1,355 @@
+@import 'tailwindcss';
+
+@theme {
+	/* Volcanic Color Palette */
+	--color-volcanic-obsidian: #1a1a1a;
+	--color-volcanic-charcoal: #2d2d2d;
+	--color-volcanic-basalt: #4a4a4a;
+	--color-volcanic-slate: #6b6b6b;
+
+	--color-ash: #a0a0a0;
+	--color-ash-light: #e8e8e8;
+
+	--color-lava: #c1440e;
+	--color-lava-dark: #8b2500;
+	--color-lava-light: #d4562f;
+
+	--color-earth: #8b7355;
+	--color-earth-light: #c8b8a0;
+	--color-earth-dark: #6b5d4f;
+
+	/* Gradient Backgrounds */
+	--gradient-lava: linear-gradient(135deg, #c1440e 0%, #8b2500 100%);
+	--gradient-lava-reverse: linear-gradient(135deg, #8b2500 0%, #c1440e 100%);
+	--gradient-lava-light: linear-gradient(135deg, #d4562f 0%, #c1440e 100%);
+
+	--gradient-earth: linear-gradient(135deg, #8b7355 0%, #6b5d4f 100%);
+	--gradient-earth-light: linear-gradient(135deg, #c8b8a0 0%, #8b7355 100%);
+
+	--gradient-volcanic: linear-gradient(135deg, #c1440e 0%, #8b7355 50%, #c8b8a0 100%);
+	--gradient-volcanic-dark: linear-gradient(135deg, #8b2500 0%, #8b7355 100%);
+
+	--gradient-obsidian: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+	--gradient-charcoal: linear-gradient(135deg, #4a4a4a 0%, #2d2d2d 100%);
+	--gradient-basalt: linear-gradient(135deg, #6b6b6b 0%, #4a4a4a 100%);
+
+	--gradient-radial-lava: radial-gradient(circle, rgba(193, 68, 14, 0.1) 0%, transparent 70%);
+	--gradient-radial-earth: radial-gradient(circle, rgba(139, 115, 85, 0.1) 0%, transparent 70%);
+
+	/* Custom Shadows */
+	--shadow-lava: 0 4px 30px rgba(193, 68, 14, 0.3);
+	--shadow-lava-lg: 0 8px 40px rgba(193, 68, 14, 0.5);
+	--shadow-earth: 0 4px 30px rgba(139, 115, 85, 0.3);
+	--shadow-earth-lg: 0 8px 40px rgba(139, 115, 85, 0.5);
+	--shadow-volcanic: 0 4px 20px rgba(0, 0, 0, 0.3);
+	--shadow-volcanic-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+@layer base {
+	body {
+		background-color: var(--color-volcanic-obsidian);
+		color: var(--color-ash-light);
+	}
+
+	html {
+		scroll-behavior: smooth;
+	}
+}
+
+@layer components {
+	/* Button Variants */
+	.btn-lava {
+		background-image: var(--gradient-lava);
+		color: var(--color-ash-light);
+		padding: 1rem 2rem;
+		border-radius: 0.5rem;
+		font-weight: 600;
+		transition: all 0.3s ease;
+
+		&:hover {
+			box-shadow: var(--shadow-lava-lg);
+			transform: translateY(-2px);
+		}
+	}
+
+	.btn-lava-outline {
+		border: 2px solid var(--color-lava);
+		color: var(--color-lava);
+		background: transparent;
+		padding: 1rem 2rem;
+		border-radius: 0.5rem;
+		font-weight: 600;
+		transition: all 0.3s ease;
+
+		&:hover {
+			background-color: var(--color-lava);
+			color: var(--color-volcanic-obsidian);
+		}
+	}
+
+	.btn-earth {
+		background-image: var(--gradient-earth);
+		color: var(--color-ash-light);
+		padding: 1rem 2rem;
+		border-radius: 0.5rem;
+		font-weight: 600;
+		transition: all 0.3s ease;
+
+		&:hover {
+			box-shadow: var(--shadow-earth-lg);
+			transform: translateY(-2px);
+		}
+	}
+
+	.btn-earth-outline {
+		border: 2px solid var(--color-earth);
+		color: var(--color-earth-light);
+		background: transparent;
+		padding: 1rem 2rem;
+		border-radius: 0.5rem;
+		font-weight: 600;
+		transition: all 0.3s ease;
+
+		&:hover {
+			background-color: var(--color-earth);
+			color: var(--color-volcanic-obsidian);
+		}
+	}
+
+	/* Card Variants */
+	.card-volcanic {
+		background-color: var(--color-volcanic-charcoal);
+		border-radius: 1rem;
+		padding: 2rem;
+		box-shadow: var(--shadow-volcanic);
+		transition: all 0.3s ease;
+
+		&:hover {
+			box-shadow: var(--shadow-volcanic-lg);
+			transform: translateY(-8px);
+		}
+	}
+
+	.card-lava-accent {
+		background-color: var(--color-volcanic-charcoal);
+		border-radius: 1rem;
+		padding: 2rem;
+		box-shadow: var(--shadow-volcanic);
+		border-bottom: 4px solid var(--color-lava);
+		transition: all 0.3s ease;
+
+		&:hover {
+			box-shadow: var(--shadow-volcanic-lg);
+			transform: translateY(-8px);
+		}
+	}
+
+	.card-earth-accent {
+		background-color: var(--color-volcanic-charcoal);
+		border-radius: 1rem;
+		padding: 2rem;
+		box-shadow: var(--shadow-volcanic);
+		border-bottom: 4px solid var(--color-earth);
+		transition: all 0.3s ease;
+
+		&:hover {
+			box-shadow: var(--shadow-volcanic-lg);
+			transform: translateY(-8px);
+		}
+	}
+
+	/* Text Gradients */
+	.text-gradient-lava {
+		background-image: var(--gradient-lava);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.text-gradient-earth {
+		background-image: var(--gradient-earth-light);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.text-gradient-volcanic {
+		background-image: var(--gradient-volcanic);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	/* Badge Components */
+	.badge-lava {
+		display: inline-block;
+		background-color: var(--color-lava);
+		color: var(--color-volcanic-obsidian);
+		padding: 0.375rem 1rem;
+		border-radius: 1.25rem;
+		font-size: 0.875rem;
+		font-weight: 600;
+		letter-spacing: 0.05em;
+	}
+
+	.badge-earth {
+		display: inline-block;
+		background: rgba(139, 115, 85, 0.2);
+		color: var(--color-earth-light);
+		padding: 0.375rem 1rem;
+		border-radius: 1.25rem;
+		font-size: 0.875rem;
+		font-weight: 600;
+		letter-spacing: 0.05em;
+		border: 1px solid var(--color-earth);
+	}
+
+	.badge-outline {
+		display: inline-block;
+		background: transparent;
+		color: var(--color-ash-light);
+		padding: 0.375rem 1rem;
+		border-radius: 1.25rem;
+		font-size: 0.875rem;
+		font-weight: 600;
+		letter-spacing: 0.05em;
+		border: 1px solid var(--color-volcanic-basalt);
+	}
+
+	/* Input Fields */
+	.input-volcanic {
+		background-color: var(--color-volcanic-charcoal);
+		border: 1px solid var(--color-volcanic-basalt);
+		color: var(--color-ash-light);
+		padding: 0.75rem 1rem;
+		border-radius: 0.5rem;
+		transition: all 0.3s ease;
+
+		&:focus {
+			outline: none;
+			border-color: var(--color-lava);
+			box-shadow: 0 0 0 3px rgba(193, 68, 14, 0.1);
+		}
+
+		&::placeholder {
+			color: var(--color-ash);
+		}
+	}
+
+	/* Link Styles */
+	.link-lava {
+		color: var(--color-lava);
+		text-decoration: none;
+		font-weight: 600;
+		transition: color 0.3s ease;
+
+		&:hover {
+			color: var(--color-lava-light);
+		}
+	}
+
+	.link-earth {
+		color: var(--color-earth-light);
+		text-decoration: none;
+		font-weight: 600;
+		transition: color 0.3s ease;
+
+		&:hover {
+			color: var(--color-earth);
+		}
+	}
+
+	/* Section Backgrounds */
+	.section-dark {
+		background-color: var(--color-volcanic-obsidian);
+	}
+
+	.section-charcoal {
+		background-color: var(--color-volcanic-charcoal);
+	}
+
+	.section-gradient-obsidian {
+		background-image: var(--gradient-obsidian);
+	}
+
+	.section-gradient-lava {
+		background-image: var(--gradient-lava);
+	}
+
+	/* Dividers */
+	.divider-volcanic {
+		height: 1px;
+		background-color: var(--color-volcanic-basalt);
+	}
+
+	.divider-lava {
+		height: 2px;
+		background-image: var(--gradient-lava);
+	}
+
+	/* Hero Patterns */
+	.hero-volcanic {
+		background: linear-gradient(
+			135deg,
+			var(--color-volcanic-charcoal) 0%,
+			var(--color-volcanic-obsidian) 100%
+		);
+		position: relative;
+		overflow: hidden;
+
+		&::after {
+			content: '';
+			position: absolute;
+			top: -50px;
+			right: -50px;
+			width: 300px;
+			height: 300px;
+			background: var(--gradient-radial-lava);
+			border-radius: 50%;
+			pointer-events: none;
+		}
+	}
+}
+
+@layer utilities {
+	/* Custom utility classes for quick use */
+	.bg-lava-glow {
+		background-image: var(--gradient-lava);
+	}
+
+	.bg-earth-warm {
+		background-image: var(--gradient-earth-light);
+	}
+
+	.border-lava-accent {
+		border-color: var(--color-lava);
+	}
+
+	.border-earth-accent {
+		border-color: var(--color-earth);
+	}
+
+	.shadow-lava-glow {
+		box-shadow: var(--shadow-lava);
+	}
+
+	.shadow-earth-glow {
+		box-shadow: var(--shadow-earth);
+	}
+}
+
+.smooth-scale {
+    animation: 2s ease-in-out scale-smooth;
+}
+
+@keyframes scale-smooth {
+    from {
+        transform: scale(1);
+    }
+    to{
+        transform: scale(1.25)
+    }
+}
+
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
