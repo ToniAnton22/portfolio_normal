@@ -23,9 +23,9 @@
 <section
 	class="relative flex min-h-screen items-center justify-center overflow-hidden bg-volcanic-obsidian"
 >
-	<!-- Main content -->
+
 	<div class="relative z-10 mx-auto max-w-7xl px-6 py-32 text-center">
-		<!-- Glowing orb decoration -->
+
 		<div
 			class="absolute top-0 left-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-20 blur-3xl"
 			style="background: radial-gradient(circle, rgba(193, 68, 14, 0.3) 0%, transparent 70%);"
@@ -33,42 +33,35 @@
 
 
 		<h1 use:scaleWords={{ speed: 0.1 }} class="relative mb-6 text-6xl font-bold md:text-8xl transition-all duration-200 delay-75">
-			<!-- SNIPPET: Replace with your name -->
+		
 			<span class="text-gradient-volcanic">
 				{name}
 			</span>
 		</h1>
 
-		<!-- Subtitle with typing effect -->
+	
 		<div
 			class="fade-in-up mb-8 font-mono text-2xl text-earth-light md:text-4xl"
 			style="animation-delay: 0.2s;"
 		>
-			<!-- SNIPPET: Add your role/title here -->
 			<span class="text-lava">{'>'}</span>
 			{displayJobText}
 			<span class="animate-pulse">_</span>
 		</div>
 
-		<!-- Description -->
 		<p
 			class="fade-in-up mx-auto mb-12 max-w-3xl text-xl text-ash md:text-2xl"
 			style="animation-delay: 0.4s;"
 		>
-			<!-- SNIPPET: Add your tagline/description here -->
 			Crafting powerful web applications with modern technologies and clean code
 		</p>
 
-		<!-- CTA Buttons -->
 		<div class="fade-in-up flex flex-wrap justify-center gap-6" style="animation-delay: 0.6s;">
-			<!-- SNIPPET: Update href to link to your projects section -->
 			<a href="#projects" class="btn-lava"> View My Work </a>
 
-			<!-- SNIPPET: Update href to link to your contact section -->
 			<a href="#contact" class="btn-earth-outline"> Get In Touch </a>
 		</div>
 
-		<!-- Decorative elements -->
 		<div  class="absolute bottom-10 left-1/2 flex -translate-x-1/2 flex-col items-center">
 			<span class="mb-2 text-sm text-earth-light">Scroll Down</span>
 			<div class="flex h-10 w-6 justify-center rounded-full border-2 border-earth">

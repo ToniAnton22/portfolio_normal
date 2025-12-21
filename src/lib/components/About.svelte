@@ -60,7 +60,6 @@
 </script>
 
 <section id="about" class="relative overflow-hidden section-charcoal py-32">
-	<!-- Background effects -->
 	<div class="absolute inset-0 opacity-5">
 		<div
 			class="h-full w-full bg-[linear-gradient(to_right,#4a4a4a_1px,transparent_1px),linear-gradient(to_bottom,#4a4a4a_1px,transparent_1px)] bg-[size:4rem_4rem]"
@@ -76,40 +75,30 @@
 	></div>
 
 	<div class="relative z-10 mx-auto max-w-7xl px-6">
-		<!-- Section Header -->
 		<div class="mb-20 text-center">
 			<h2 class="mb-6 text-gradient-volcanic text-5xl font-bold md:text-6xl">About Me</h2>
-			<p class="mx-auto max-w-2xl text-xl text-ash">
-				<!-- SNIPPET: Update this description -->
-				The story behind the code
-			</p>
+			<p class="mx-auto max-w-2xl text-xl text-ash">The story behind the code</p>
 			<div class="divider-lava mx-auto mt-6 w-32"></div>
 		</div>
 
-		<!-- Main Content -->
 		<div class="grid grid-cols-1 items-start gap-16 lg:grid-cols-2">
-			<!-- Left Column - Bio and Image -->
 			<div class="fade-in-up space-y-8">
-				<!-- Profile Image Placeholder -->
 				<div class="group relative space-y-20 mt-12">
 					<div
 						class="relative mx-auto aspect-square w-full max-w-md overflow-hidden rounded-2xl border-4 border-lava/50 shadow-lava-lg"
 					>
-						<!-- SNIPPET: Replace with your actual image -->
-						<img 
-							src="/mail/me.jpg" 
-							alt="Cristian Anton Frincu" 
+						<img
+							src="/mail/me.jpg"
+							alt="Cristian Anton Frincu"
 							class="w-full h-full object-cover"
 						/>
 
-						<!-- Hover overlay -->
 						<div
 							class="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 							style="background: linear-gradient(to top, var(--color-volcanic-charcoal), transparent);"
 						></div>
 					</div>
 
-					<!-- Decorative corners -->
 					<div
 						class="absolute -top-4 -left-4 h-16 w-16 rounded-tl-2xl border-t-4 border-l-4 border-lava"
 					></div>
@@ -118,9 +107,7 @@
 					></div>
 				</div>
 
-				<!-- Bio Text -->
 				<div class="space-y-4 text-lg leading-relaxed text-ash">
-					<!-- SNIPPET: Update with your own bio -->
 					<p>
 						Welcome to my digital forge! I'm a passionate developer who loves crafting beautiful,
 						functional, and user-centric web experiences. My journey in tech has been driven by
@@ -138,9 +125,7 @@
 					</p>
 				</div>
 
-				<!-- Quick Stats -->
 				<div class="grid grid-cols-3 gap-4 pt-8">
-					<!-- SNIPPET: Update these stats -->
 					<div class="card-lava-accent p-4 text-center">
 						<div class="mb-1 text-3xl font-bold text-lava">2+</div>
 						<div class="text-sm text-ash">Years Exp</div>
@@ -156,12 +141,10 @@
 				</div>
 			</div>
 
-			<!-- Right Column - Timeline -->
 			<div class="fade-in-up" style="animation-delay: 0.2s;">
 				<h3 class="mb-8 text-3xl font-bold text-lava">My Journey</h3>
 
 				<div class="relative space-y-8">
-					<!-- Timeline line -->
 					<div
 						class="absolute top-0 bottom-0 left-8 w-0.5"
 						style="background: var(--gradient-lava);"
@@ -169,14 +152,12 @@
 
 					{#each timeline as item, index}
 						<div class="fade-in-up relative pl-20" style="animation-delay: {0.3 + index * 0.1}s;">
-							<!-- Timeline dot -->
 							<div
 								class="absolute left-0 z-10 flex h-16 w-16 items-center justify-center rounded-full border-4 border-lava bg-volcanic-charcoal text-2xl shadow-lava"
 							>
 								{item.icon || '📍'}
 							</div>
 
-							<!-- Content -->
 							<div class="card-volcanic hover:border-lava/50">
 								<div class="badge-earth mb-2">
 									{item.year}

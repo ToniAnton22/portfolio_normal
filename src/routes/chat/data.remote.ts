@@ -29,7 +29,7 @@ export const sendMessage = command(SendMessageSchema, async ({ query }) => {
 		}> = [];
 
 		if (existingStr) {
-			existing = JSON.parse(existingStr); // parse string into array
+			existing = JSON.parse(existingStr);
 		}
 
 		existing.push(
@@ -179,7 +179,7 @@ function formatConversationContext(
 	]
 ): string {
 	return messages
-		.slice(-10) // Last 10 messages
-		.map((msg) => `${msg.role.toUpperCase()}: ${msg.content.slice(0, 2400)}`) // ~600 tokens
+		.slice(-10)
+		.map((msg) => `${msg.role.toUpperCase()}: ${msg.content.slice(0, 2400)}`)
 		.join('\n\n');
 }

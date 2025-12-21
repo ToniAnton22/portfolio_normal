@@ -8,7 +8,10 @@
 	import Footer from '$lib/components/Footer.svelte';
 	import ChatBubble from '$lib/components/ChatBubble.svelte';
 	
-	let isHidden = $state(true)
+	let {data} = $props()
+	console.log(data)
+	// svelte-ignore state_referenced_locally
+	let isHidden = $state(data.isHidden)
 </script>
 
 <Navigation />

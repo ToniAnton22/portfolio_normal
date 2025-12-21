@@ -1,4 +1,3 @@
-// Types describing the data we send to callbacks
 export interface MouseData {
   x: number;
   y: number;
@@ -11,7 +10,6 @@ export interface ScrollData {
   event: Event;
 }
 
-// Each element gets both mouse+scroll info (optionally)
 export type InteractionCallback = (
   el: HTMLElement,
   data: {
@@ -50,7 +48,7 @@ export class InteractionObserver {
   }
 
   private onScroll(event: Event) {
-    // You can use scrollX/scrollY or pageXOffset/pageYOffset
+
     this.lastScroll = {
       x: window.scrollX,
       y: window.scrollY,
@@ -75,8 +73,7 @@ export class InteractionObserver {
     }
 
     this.subscribers.set(el, callback);
-
-    // Optionally, immediately send current state if we already have some
+    
     if (this.lastMouse || this.lastScroll) {
       callback(el, {
         mouse: this.lastMouse ?? undefined,

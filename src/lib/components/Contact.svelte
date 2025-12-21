@@ -80,7 +80,6 @@
 </script>
 
 <section id="contact" class="relative overflow-hidden section-gradient-obsidian py-32">
-	<!-- Background effects -->
 	<div class="absolute inset-0 opacity-5">
 		<div
 			class="h-full w-full bg-[linear-gradient(to_right,#4a4a4a_1px,transparent_1px),linear-gradient(to_bottom,#4a4a4a_1px,transparent_1px)] bg-[size:4rem_4rem]"
@@ -96,20 +95,16 @@
 	></div>
 
 	<div class="relative z-10 mx-auto max-w-7xl px-6">
-		<!-- Section Header -->
 		<div class="mb-20 text-center">
 			<h2 class="mb-6 text-gradient-volcanic text-5xl font-bold md:text-6xl">Get In Touch</h2>
 			<p class="mx-auto max-w-2xl text-xl text-ash">
-				<!-- SNIPPET: Update this description -->
 				Have a project in mind or want to collaborate? Let's create something amazing together!
 			</p>
 			<div class="divider-lava mx-auto mt-6 w-32"></div>
 		</div>
 
 		<div class="grid grid-cols-1 gap-16 lg:grid-cols-2">
-			<!-- Left Column - Contact Info -->
 			<div class="fade-in-up space-y-8">
-				<!-- Contact Methods -->
 				<div class="space-y-6">
 					{#each contactMethods as method, index}
 						<div
@@ -135,7 +130,6 @@
 					{/each}
 				</div>
 
-				<!-- Social Links -->
 				<div class="pt-8">
 					<h3 class="mb-6 text-2xl font-bold text-lava">Connect With Me</h3>
 					<div class="flex flex-wrap gap-4">
@@ -159,18 +153,14 @@
 					</div>
 				</div>
 
-				<!-- Decorative quote -->
 				<div class="card-volcanic mt-8 border-l-4 border-lava italic text-ash">
-					<!-- SNIPPET: Add your own quote or remove this section -->
 					"The best way to predict the future is to create it."
 					<div class="mt-2 text-sm text-earth-light">- Let's build together</div>
 				</div>
 			</div>
 
-			<!-- Right Column - Contact Form -->
 			<div class="fade-in-up" style="animation-delay: 0.2s;">
 				<form onsubmit={handleSubmit} class="space-y-6">
-					<!-- Name Field -->
 					<div>
 						<label for="name" class="mb-2 block text-sm font-semibold text-ash-light">
 							Your Name
@@ -185,7 +175,6 @@
 						/>
 					</div>
 
-					<!-- Email Field -->
 					<div>
 						<label for="email" class="mb-2 block text-sm font-semibold text-ash-light">
 							Email Address
@@ -200,7 +189,6 @@
 						/>
 					</div>
 
-					<!-- Subject Field -->
 					<div>
 						<label for="subject" class="mb-2 block text-sm font-semibold text-ash-light">
 							Subject
@@ -215,7 +203,6 @@
 						/>
 					</div>
 
-					<!-- Message Field -->
 					<div>
 						<label for="message" class="mb-2 block text-sm font-semibold text-ash-light">
 							Message
@@ -230,7 +217,6 @@
 						></textarea>
 					</div>
 
-					<!-- Submit Button -->
 					<button
 						type="submit"
 						class="btn-lava group flex w-full items-center justify-center gap-3 disabled:opacity-50"

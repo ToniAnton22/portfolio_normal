@@ -153,7 +153,6 @@
 		</div>
 	</div>
 
-	<!-- Decorative bottom glow -->
 	<div
 		class="absolute right-0 bottom-0 left-0 h-px opacity-50"
 		style="background: var(--gradient-lava);"

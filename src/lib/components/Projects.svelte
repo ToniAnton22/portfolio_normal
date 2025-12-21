@@ -86,10 +86,19 @@
 			]
 		}
 	];
+
+	const setGlobalHidden = async () => {
+		await fetch('/redis/set-hidden', {
+			method:'PUT',
+			headers:{
+				'Content-Type':'application/json'
+			},
+			body: JSON.stringify(false)
+		})
+	}
 </script>
 
 <section id="projects" class="relative overflow-hidden bg-volcanic-obsidian py-32">
-	<!-- Background effects -->
 	<div class="absolute inset-0 opacity-10">
 		<div
 			class="h-full w-full bg-[linear-gradient(to_right,#4a4a4a_1px,transparent_1px),linear-gradient(to_bottom,#4a4a4a_1px,transparent_1px)] bg-[size:4rem_4rem]"
@@ -105,49 +114,48 @@
 	></div>
 
 	<div class="relative z-10 mx-auto max-w-7xl px-6">
-		<!-- Section Header -->
+	
 		<div class="mb-20 text-center">
 			<h2 class="mb-6 text-gradient-volcanic text-5xl font-bold md:text-6xl">Featured Projects</h2>
 			<p class="mx-auto max-w-2xl text-xl text-ash">
-				<!-- SNIPPET: Update this description -->
 				Explore my latest work and creative endeavors forged in code
 			</p>
 			<div class="divider-lava mx-auto mt-6 w-32"></div>
 		</div>
 
-		<!-- Projects Grid -->
+	
 		<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
 			{#each projects as project, index}
 				<div
 					class="card-volcanic group relative overflow-hidden border-transparent hover:border-lava/50"
 					style="animation-delay: {index * 0.1}s;"
 				>
-					<!-- Featured badge -->
+		
 					{#if project.featured}
 						<div class="absolute top-4 right-4 z-20 badge-lava">FEATURED</div>
 					{/if}
 
-					<!-- Project Image -->
+			
 					<div class="relative h-56 overflow-hidden rounded-t-2xl">
 						<img
 							src={project.image}
 							alt={project.title}
 							class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
 						/>
-						<!-- Overlay on hover -->
+				
 						<div
 							class="absolute inset-0 opacity-60 transition-opacity duration-300 group-hover:opacity-80"
 							style="background: linear-gradient(to top, var(--color-volcanic-charcoal), rgba(45, 45, 45, 0.8), transparent);"
 						></div>
 
-						<!-- Quick Links Overlay -->
+					
 						<div
 							class="absolute inset-0 flex items-center justify-center gap-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 						>
 							{#if project.demoLink}
 								{#if project.id === 4}
 									<button
-										onclick={() => (isHidden = !isHidden)}
+										onclick={setGlobalHidden}
 										class="flex h-12 w-12 items-center justify-center rounded-full bg-lava transition-all duration-300 hover:scale-110 hover:shadow-lava"
 										title="View Demo"
 									>
@@ -219,18 +227,17 @@
 						</div>
 					</div>
 
-					<!-- Project Info -->
 					<div class="p-6">
 						<h3
 							class="mb-3 text-2xl font-bold text-lava transition-colors duration-300 group-hover:text-earth"
 						>
 							{project.title}
 						</h3>
-						<p class="mb-4 line-clamp-3 text-ash">
+						<p class="mb-4 text-ash">
 							{project.description}
 						</p>
 
-						<!-- Tech Tags -->
+			
 						<div class="flex flex-wrap gap-2">
 							{#each project.tags as tag}
 								<span class="badge-earth text-xs">
@@ -240,7 +247,6 @@
 						</div>
 					</div>
 
-					<!-- Glowing border effect -->
 					<div
 						class="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 						style="box-shadow: inset 0 0 20px rgba(193, 68, 14, 0.1);"

@@ -11,7 +11,7 @@
 
 	let isCollapsed = $state(true);
 	let isTyping = $state(false);
-	let messagesContainer: HTMLDivElement;
+	let messagesContainer: HTMLDivElement | undefined = $state();
 
 	let messages: Message[] = $state([
 		{
@@ -53,7 +53,6 @@
 			previousInput = userInput;
 			userInput = '';
 
-			// Add user message
 			messages.push({
 				role: 'user',
 				content: previousInput,
@@ -66,7 +65,6 @@
 
 			await scrollToBottom();
 
-			// Show typing indicator
 			isTyping = true;
 			await scrollToBottom();
 
@@ -75,9 +73,9 @@
 
 				if (!response) {
 					userInput = previousInput;
-					messages.pop(); // Remove user message if failed
+					messages.pop(); 
 				} else {
-					// Add assistant response
+
 					messages.push({
 						role: 'assistant',
 						content: response.content || response,
@@ -95,6 +93,7 @@
 			} finally {
 				isTyping = false;
 				await scrollToBottom();
+				alert("An error has occured, please try again later.")
 			}
 		}
 	}
@@ -110,23 +109,17 @@
 		isCollapsed = !isCollapsed;
 	}
 
-	// Format message content (markdown-like formatting)
 	function formatMessage(content: string): string {
 		if (!content) return '';
 
-		// Convert **bold** to <strong>
 		let formatted = content.replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold">$1</strong>');
 
-		// Convert *italic* to <em>
 		formatted = formatted.replace(/\*(.+?)\*/g, '<em class="italic">$1</em>');
 
-		// Convert `code` to <code>
 		formatted = formatted.replace(
 			/`(.+?)`/g,
 			'<code class="px-1.5 py-0.5 bg-volcanic-obsidian/50 rounded text-lava-light font-mono text-xs">$1</code>'
 		);
-
-		// Convert line breaks to <br>
 		formatted = formatted.replace(/\n/g, '<br>');
 
 		return formatted;
@@ -263,7 +256,7 @@
 						>
 							{#if message.role === 'assistant'}
 								<div
-									class="w-8 h-8 flex-shrink-0 bg-lava-glow rounded-full flex items-center justify-center text-ash-light"
+									class="w-8 h-8 shrink-0 bg-lava-glow rounded-full flex items-center justify-center text-ash-light"
 								>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -308,7 +301,7 @@
 					{#if isTyping}
 						<div class="flex gap-3 flex-row animate-in fade-in slide-in-from-bottom-2 duration-300">
 							<div
-								class="w-8 h-8 flex-shrink-0 bg-lava-glow rounded-full flex items-center justify-center text-ash-light"
+								class="w-8 h-8 shrink-0 bg-lava-glow rounded-full flex items-center justify-center text-ash-light"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -365,7 +358,8 @@
 						<button
 							onclick={handleSend}
 							disabled={!userInput.trim() || isTyping}
-							class="w-11 h-11 flex-shrink-0 bg-lava-glow rounded-xl flex items-center justify-center text-ash-light transition-all hover:shadow-lava-glow hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
+							class="w-11 h-11 shrink-0 bg-lava-glow rounded-xl flex items-center justify-center text-ash-light transition-all hover:shadow-lava-glow hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
+							title="The chatter"
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -386,6 +380,37 @@
 			</div>
 		</div>
 	{/if}
+{:else}
+	<button
+		onclick={toggleCollapse}
+		class="fixed bottom-6 right-6 z-50 w-16 h-16 bg-lava-glow/50 rounded-full shadow-lava-glow flex items-center justify-center text-ash-light transition-all hover:scale-110 hover:shadow-[0_8px_50px_rgba(193,68,14,0.7)] active:scale-95 group"
+		disabled
+		aria-label="Open chat"
+	>
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			class="w-7 h-7 transition-transform group-hover:scale-110"
+		>
+			<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+			<path d="M8 10h.01"></path>
+			<path d="M12 10h.01"></path>
+			<path d="M16 10h.01"></path>
+		</svg>
+		<span
+			class="absolute bottom-20 right-1/2 -translate-y-1/2 bg-lava-light text-volcanic-obsidian px-3 py-1 rounded
+                 text-sm whitespace-nowrap
+                 opacity-0 group-hover:opacity-100 transition-opacity duration-300
+                 pointer-events-none"
+		>
+			And there, stood a lonely eye....
+		</span>
+	</button>
 {/if}
 
 <style>
