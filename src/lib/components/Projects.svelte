@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { invalidateAll } from "$app/navigation";
+
 	let { isHidden = $bindable(true) } = $props();
 	interface Project {
 		id: number;
@@ -88,14 +90,17 @@
 	];
 
 	const setGlobalHidden = async () => {
-		await fetch('/redis/set-hidden', {
-			method:'PUT',
-			headers:{
-				'Content-Type':'application/json'
+		await fetch('/api/redis/set-hidden', {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(false)
-		})
-	}
+		});
+		setTimeout(() => {
+			invalidateAll();
+		}, 1000);
+	};
 </script>
 
 <section id="projects" class="relative overflow-hidden bg-volcanic-obsidian py-32">
@@ -114,7 +119,6 @@
 	></div>
 
 	<div class="relative z-10 mx-auto max-w-7xl px-6">
-	
 		<div class="mb-20 text-center">
 			<h2 class="mb-6 text-gradient-volcanic text-5xl font-bold md:text-6xl">Featured Projects</h2>
 			<p class="mx-auto max-w-2xl text-xl text-ash">
@@ -123,32 +127,28 @@
 			<div class="divider-lava mx-auto mt-6 w-32"></div>
 		</div>
 
-	
 		<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
 			{#each projects as project, index}
 				<div
 					class="card-volcanic group relative overflow-hidden border-transparent hover:border-lava/50"
 					style="animation-delay: {index * 0.1}s;"
 				>
-		
 					{#if project.featured}
 						<div class="absolute top-4 right-4 z-20 badge-lava">FEATURED</div>
 					{/if}
 
-			
 					<div class="relative h-56 overflow-hidden rounded-t-2xl">
 						<img
 							src={project.image}
 							alt={project.title}
 							class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
 						/>
-				
+
 						<div
 							class="absolute inset-0 opacity-60 transition-opacity duration-300 group-hover:opacity-80"
 							style="background: linear-gradient(to top, var(--color-volcanic-charcoal), rgba(45, 45, 45, 0.8), transparent);"
 						></div>
 
-					
 						<div
 							class="absolute inset-0 flex items-center justify-center gap-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 						>
@@ -237,7 +237,6 @@
 							{project.description}
 						</p>
 
-			
 						<div class="flex flex-wrap gap-2">
 							{#each project.tags as tag}
 								<span class="badge-earth text-xs">

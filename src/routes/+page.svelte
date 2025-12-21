@@ -9,9 +9,8 @@
 	import ChatBubble from '$lib/components/ChatBubble.svelte';
 	
 	let {data} = $props()
-	console.log(data)
 	// svelte-ignore state_referenced_locally
-	let isHidden = $state(data.isHidden)
+	let isHidden = $derived(data.isHidden)
 </script>
 
 <Navigation />
