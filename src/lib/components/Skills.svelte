@@ -1,51 +1,36 @@
-<!-- 
-  Skills Section Component - Volcanic Theme
-  
-  PURPOSE: Display your technical skills with animated progress bars and icons
-  
-  CUSTOMIZATION POINTS:
-  1. Add your skills to the skills array with name, level, and category
-  2. Update skill categories (Frontend, Backend, Tools, etc.)
-  3. Add icons or logos for each skill
-  4. Modify the animation style and colors
-  5. Change the layout (grid, bars, circular progress, etc.)
--->
-
 <script lang="ts">
-	// SNIPPET: Define your skill type
-	interface Skill {
-		name: string;
-		level: number; // 0-100
-		category: 'frontend' | 'backend' | 'tools' | 'other';
-		icon?: string;
-	}
-
-	// SNIPPET: Add your skills here
 	const skills: Skill[] = [
 		// Frontend
 		{ name: 'SvelteKit', level: 95, category: 'frontend', icon: '🔥' },
+		{ name: 'Svelte 5', level: 95, category: 'frontend', icon: '🚀' },
 		{ name: 'TypeScript', level: 92, category: 'frontend', icon: '📘' },
-		{ name: 'React', level: 88, category: 'frontend', icon: '⚛️' },
-		{ name: 'Next.js', level: 85, category: 'frontend', icon: '▲' },
+		{ name: 'React', level: 85, category: 'frontend', icon: '⚛️' },
+		{ name: 'Next.js', level: 82, category: 'frontend', icon: '▲' },
 		{ name: 'TailwindCSS', level: 94, category: 'frontend', icon: '💨' },
 		{ name: 'HTML/CSS', level: 96, category: 'frontend', icon: '🎨' },
+		{ name: 'Tiptap', level: 88, category: 'frontend', icon: '✍️' },
 
 		// Backend
-		{ name: '.NET Core', level: 88, category: 'backend', icon: '💎' },
-		{ name: 'Node.js', level: 85, category: 'backend', icon: '🟢' },
+		{ name: 'C# .NET Core', level: 90, category: 'backend', icon: '💎' },
+		{ name: 'Node.js', level: 88, category: 'backend', icon: '🟢' },
+		{ name: 'Fastify', level: 87, category: 'backend', icon: '⚡' },
+		{ name: 'Express', level: 85, category: 'backend', icon: '🚂' },
 		{ name: 'PostgreSQL', level: 90, category: 'backend', icon: '🐘' },
-		{ name: 'C#', level: 87, category: 'backend', icon: '🎯' },
-		{ name: 'Drizzle ORM', level: 83, category: 'backend', icon: '🌊' },
+		{ name: 'Dapper ORM', level: 88, category: 'backend', icon: '🌊' },
+		{ name: 'MongoDB', level: 83, category: 'backend', icon: '🍃' },
+		{ name: 'Supabase', level: 89, category: 'backend', icon: '⚡' },
 
 		// Tools
 		{ name: 'Git', level: 91, category: 'tools', icon: '📦' },
-		{ name: 'Electron', level: 82, category: 'tools', icon: '⚡' },
-		{ name: 'Docker', level: 78, category: 'tools', icon: '🐳' },
-		{ name: 'Azure', level: 80, category: 'tools', icon: '☁️' },
-		{ name: 'Supabase', level: 85, category: 'tools', icon: '⚙️' }
+		{ name: 'GitHub Actions', level: 85, category: 'tools', icon: '🔄' },
+		{ name: 'Electron', level: 87, category: 'tools', icon: '⚡' },
+		{ name: 'AWS', level: 86, category: 'tools', icon: '☁️' },
+		{ name: 'Azure', level: 84, category: 'tools', icon: '🌐' },
+		{ name: 'Terraform CDKTF', level: 82, category: 'tools', icon: '🏗️' },
+		{ name: 'Datadog', level: 80, category: 'tools', icon: '📊' },
+		{ name: 'Mapbox', level: 85, category: 'tools', icon: '🗺️' }
 	];
 
-	// Group skills by category
 	const groupedSkills = {
 		frontend: skills.filter((s) => s.category === 'frontend'),
 		backend: skills.filter((s) => s.category === 'backend'),
@@ -53,7 +38,6 @@
 		other: skills.filter((s) => s.category === 'other')
 	};
 
-	// SNIPPET: Customize category display names and colors
 	const categories = [
 		{ key: 'frontend', label: 'Frontend', gradient: 'gradient-lava' },
 		{ key: 'backend', label: 'Backend', gradient: 'gradient-earth' },
@@ -146,11 +130,11 @@
 		<!-- Additional Stats Section -->
 		<div class="mt-20 grid grid-cols-1 gap-8 md:grid-cols-3">
 			<div class="card-lava-accent p-8 text-center">
-				<div class="mb-2 text-5xl font-bold text-lava">5+</div>
+				<div class="mb-2 text-5xl font-bold text-lava">2+</div>
 				<div class="text-ash">Years Experience</div>
 			</div>
 			<div class="card-earth-accent p-8 text-center">
-				<div class="mb-2 text-5xl font-bold text-earth">50+</div>
+				<div class="mb-2 text-5xl font-bold text-earth">4+</div>
 				<div class="text-ash">Projects Completed</div>
 			</div>
 			<div class="rounded-lg border border-earth-light/30 bg-volcanic-charcoal p-8 text-center">
@@ -170,7 +154,6 @@
 		style="background: var(--gradient-radial-earth);"
 	></div>
 </section>
-
 <style>
 	.fade-in-up {
 		animation: fadeInUp 0.8s ease-out forwards;

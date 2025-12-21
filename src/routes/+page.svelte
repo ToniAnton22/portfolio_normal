@@ -8,7 +8,7 @@
 	import Footer from '$lib/components/Footer.svelte';
 	import ChatBubble from '$lib/components/ChatBubble.svelte';
 	
-	let isHidden = $state(false)
+	let isHidden = $state(true)
 </script>
 
 <Navigation />
@@ -18,7 +18,7 @@
 
 	<About />
 
-	<Projects />
+	<Projects bind:isHidden/>
 
 	<Skills />
 

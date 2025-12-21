@@ -1,4 +1,5 @@
 <script lang="ts">
+	let { isHidden = $bindable(true) } = $props();
 	interface Project {
 		id: number;
 		title: string;
@@ -10,48 +11,79 @@
 		featured?: boolean;
 	}
 
-
 	const projects: Project[] = [
 		{
 			id: 1,
-			title: 'Plane Dilemma Frontend',
+			title: 'Plane Dilemma Wiki',
 			description:
-				'The preview of a comprehensive D&D campaign management system with AI-powered session processing, audio transcription,'+ 
-				' and database integration. Data in the wiki is inserted using the main application (Not available publicly)',
+				'Interactive D&D campaign visualization platform with book-style presentation and Mapbox integration. ' +
+				'Features elegant animations and read-only campaign data access through C# .NET backend integration with Supabase.',
 			image: '/projects/plane.png',
-			tags: ['SvelteKit', 'Javascript', 'Typescript', 'PostgreSQL','Supabase','C#', '.NET'],
+			tags: [
+				'SvelteKit 2',
+				'Svelte 5',
+				'TypeScript',
+				'C# .NET',
+				'Mapbox',
+				'Supabase',
+				'Tailwind CSS',
+				'Vercel'
+			],
 			demoLink: 'https://www.planedilemma.bard-labs.com',
 			githubLink: 'https://github.com/ToniAnton22/plane-dilemma-frontend',
 			featured: true
 		},
 		{
 			id: 2,
-			title: 'E-Commerce Platform (Demo)',
+			title: 'GTA Installer',
 			description:
-				'Full-featured e-commerce application with product filtering, checkout system, and payment integration.',
-			image: '/projects/doncsn.png',
-			tags: ['Sveltekit 2', 'Svelte 5', 'Supabase', 'Stripe', 'TailwindCSS', 'HTML & CSS'],
-			demoLink: 'https://don-csn.vercel.app/dashboard',
-			githubLink: '#'
+				'Sophisticated Electron desktop application for automated GTA San Andreas mod installation. ' +
+				'Features AI-assisted instruction generation, multi-source download support (Google Drive, ShareMods), and admin web interface for mod database management.',
+			image: '/projects/installer.png',
+			tags: ['Electron', 'Vite', 'SvelteKit 2', 'Svelte 5', 'TypeScript', 'OpenAI', 'Express'],
+			githubLink: 'https://github.com/ToniAnton22/gta-installer-release/releases',
+			featured: true
 		},
 		{
 			id: 3,
-			title: 'MCP Server Integration',
+			title: 'DonCSN - Automotive Service Platform',
 			description:
-				'Model Context Protocol server enabling Claude AI to interact with campaign databases and process transcripts.',
-			image: 'https://via.placeholder.com/600x400/c8b8a0/1a1a1a?text=MCP+Server',
-			tags: ['TypeScript', 'Claude AI', '.NET', 'PostgreSQL', 'SupaBase'],
-			demoLink: 'https://example.com',
-			githubLink: 'https://github.com'
+				'Enterprise-grade automotive service management and e-commerce platform with appointment booking, ' +
+				'real-time inventory management, secure checkout flow, and business analytics dashboard. Professional dark noir design.',
+			image: '/projects/doncsn.png',
+			tags: ['SvelteKit 2', 'Svelte 5', 'TypeScript', 'PostgreSQL', 'Drizzle ORM', 'Tailwind CSS'],
+			demoLink: 'https://don-csn.vercel.app/dashboard',
+			githubLink: '#',
+			featured: true
 		},
 		{
 			id: 4,
-			title: 'GTA Installer',
+			title: 'Plane Dilemma C# Backend & MCP Server',
 			description:
-				'A mod installer for GTA SA.',
-			image: '/projects/installer.png',
-			tags: ['Electron', 'Vite', 'Svelte 5', 'SvelteKit 2', 'Open AI integration', 'Nodejs','Express'],
-			githubLink: 'https://github.com/ToniAnton22/gta-installer-release/releases'
+				'Robust microservices backend serving Dave and Wiki with dual API architecture, EventSource real-time updates, ' +
+				'JWT authentication, role-based access control, recording coordination, and integrated MCP server enabling Claude AI database interaction.',
+			image: '/projects/locked.webp',
+			tags: ['C# .NET', 'Azure', 'Dapper', 'Supabase', 'OpenAI', 'MCP', 'EventSource', 'JWT'],
+			demoLink: '#'
+		},
+		{
+			id: 5,
+			title: 'Dave - D&D Campaign Management System',
+			description:
+				'Advanced Electron-based campaign management system with AI-powered transcript processing, real-time collaboration, ' +
+				'canvas-based interface with drag-and-drop customization, audio recording coordination, Foundry VTT integration, ' +
+				'and role-based visibility system. Private enterprise application with comprehensive CRUD operations and API throttling.',
+			image: '/projects/locked.webp',
+			tags: [
+				'Electron Vite',
+				'SvelteKit 2',
+				'Svelte 5',
+				'TypeScript',
+				'Supabase',
+				'Mapbox',
+				'Tiptap',
+				'OpenAI'
+			]
 		}
 	];
 </script>
@@ -113,33 +145,61 @@
 							class="absolute inset-0 flex items-center justify-center gap-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 						>
 							{#if project.demoLink}
-								<a
-									href={project.demoLink}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="flex h-12 w-12 items-center justify-center rounded-full bg-lava transition-all duration-300 hover:scale-110 hover:shadow-lava"
-									title="View Demo"
-								>
-									<svg
-										class="h-6 w-6 text-ash-light"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
+								{#if project.id === 4}
+									<button
+										onclick={() => (isHidden = !isHidden)}
+										class="flex h-12 w-12 items-center justify-center rounded-full bg-lava transition-all duration-300 hover:scale-110 hover:shadow-lava"
+										title="View Demo"
 									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-										/>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-										/>
-									</svg>
-								</a>
+										<svg
+											class="h-6 w-6 text-ash-light"
+											fill="none"
+											stroke="currentColor"
+											viewBox="0 0 24 24"
+										>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+											/>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+											/>
+										</svg>
+									</button>
+								{:else}
+									<a
+										href={project.demoLink}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="flex h-12 w-12 items-center justify-center rounded-full bg-lava transition-all duration-300 hover:scale-110 hover:shadow-lava"
+										title="View Demo"
+									>
+										<svg
+											class="h-6 w-6 text-ash-light"
+											fill="none"
+											stroke="currentColor"
+											viewBox="0 0 24 24"
+										>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+											/>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+											/>
+										</svg>
+									</a>
+								{/if}
 							{/if}
 							{#if project.githubLink}
 								<a
