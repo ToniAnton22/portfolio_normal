@@ -382,9 +382,20 @@
 	{/if}
 {:else}
 	<button
-		onclick={toggleCollapse}
-		class="fixed bottom-6 right-6 z-50 w-16 h-16 bg-lava-glow/50 rounded-full shadow-lava-glow flex items-center justify-center text-ash-light transition-all hover:scale-110 hover:shadow-[0_8px_50px_rgba(193,68,14,0.7)] active:scale-95 group"
-		disabled
+		onclick={() => {
+			if(isHidden){
+				alert("And there, stood a lonely eye, await acknowledgment....")
+			}else{
+				toggleCollapse()
+			}
+		}}
+		class="fixed bottom-6 right-6 z-50 w-16 h-16 ring-2 ring-lava-dark
+			bg-lava-light/50 rounded-full shadow-lava-glow 
+			flex items-center justify-center text-ash-light 
+			transition-all hover:scale-110 
+			hover:shadow-[0_8px_50px_rgba(193,68,14,0.7)] 
+			active:scale-95 
+			animate-pulse"
 		aria-label="Open chat"
 	>
 		<svg
@@ -395,22 +406,14 @@
 			stroke-width="2"
 			stroke-linecap="round"
 			stroke-linejoin="round"
-			class="w-7 h-7 transition-transform group-hover:scale-110"
+			class="w-7 h-7 transition-transform"
 		>
 			<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
 			<path d="M8 10h.01"></path>
 			<path d="M12 10h.01"></path>
 			<path d="M16 10h.01"></path>
 		</svg>
-		<span
-			class="absolute bottom-20 right-1/2 -translate-y-1/2 bg-lava-light text-volcanic-obsidian px-3 py-1 rounded
-                 text-sm whitespace-nowrap
-                 opacity-0 group-hover:opacity-100 transition-opacity duration-300
-                 pointer-events-none"
-		>
-			And there, stood a lonely eye....
-		</span>
-	</button>
+</button>
 {/if}
 
 <style>

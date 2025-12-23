@@ -22,7 +22,7 @@
 			links: [
 				{ label: 'Blog', href: '#' },
 				{ label: 'Case Studies', href: '#' },
-				{ label: 'Resume', href: '/resume/Cristian_Anton_Frincu_soft.pdf', download: true },
+				{ label: 'Resume', href: '/resume/Cristian_Anton_Frincu_soft.pdf', download: 'true' },
 				{ label: 'Testimonials', href: '#' }
 			]
 		},

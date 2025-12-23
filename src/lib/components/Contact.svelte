@@ -1,9 +1,14 @@
 <script lang="ts">
+	import type { HTMLAnchorAttributes } from "svelte/elements";
+
+	type OptionalAttrs = Partial<HTMLAnchorAttributes>;
+
 	interface ContactMethod {
 		icon: string;
 		label: string;
 		value: string;
 		link?: string;
+		optional: OptionalAttrs
 	}
 
 	const contactMethods: ContactMethod[] = [
@@ -11,18 +16,30 @@
 			icon: '📧',
 			label: 'Email',
 			value: 'frincucristiananton@gmail.com',
-			link: 'mailto:frincucristiananton@gmail.com'
+			link: 'mailto:frincucristiananton@gmail.com',
+			optional:{}
 		},
 		{
 			icon: '📱',
 			label: 'Phone',
 			value: '+40 771040928',
-			link: 'tel:+40771040928'
+			link: 'tel:+40771040928',
+			optional:{}
 		},
 		{
 			icon: '📍',
 			label: 'Location',
-			value: 'Constanța, Romania'
+			value: 'Constanța, Romania',
+			optional:{}
+		},
+		{
+			icon: '📂',
+			label: 'CV',
+			value: 'Download My CV',
+			link: '/resume/Cristian_Anton_Frincu_soft.pdf',
+			optional: {
+				download: ''
+			} 
 		}
 	];
 
@@ -31,7 +48,7 @@
 		url: string;
 		icon: string;
 	}
-
+	
 	const socialLinks: SocialLink[] = [
 		{
 			name: 'GitHub',
@@ -119,7 +136,7 @@
 							<div class="flex-1">
 								<div class="mb-1 text-sm text-ash">{method.label}</div>
 								{#if method.link}
-									<a href={method.link} class="link-lava text-lg font-semibold">
+									<a href={method.link} class="link-lava text-lg font-semibold" {...method.optional}>
 										{method.value}
 									</a>
 								{:else}
