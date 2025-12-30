@@ -150,8 +150,11 @@
 						></div>
 
 						<div
-							class="absolute inset-0 flex items-center justify-center gap-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+							class="absolute inset-0 flex items-center justify-center gap-4
+								transition-opacity duration-300
+								opacity-100 md:opacity-0 md:group-hover:opacity-100"
 						>
+
 							{#if project.demoLink}
 								{#if project.id === 4}
 									<button

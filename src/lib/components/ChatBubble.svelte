@@ -1,12 +1,18 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
 	import { sendMessage, getMessages } from '../../routes/chat/data.remote';
+	import { crossfade } from 'svelte/transition';
+	import {quintOut} from 'svelte/easing'
+
 	interface Message {
 		role: 'user' | 'assistant';
 		content: string;
 		timestamp: string;
 	}
-
+	const [send,receive] = crossfade({
+		duration: 600,
+		easing: quintOut
+	})
 	let { isHidden = $bindable(true) } = $props();
 
 	let isCollapsed = $state(true);
@@ -131,173 +137,147 @@
 	});
 </script>
 
-{#if !isHidden}
-	{#if isCollapsed}
-		<button
-			onclick={toggleCollapse}
-			class="fixed bottom-6 right-6 z-50 w-16 h-16 bg-lava-glow rounded-full shadow-lava-glow flex items-center justify-center text-ash-light transition-all hover:scale-110 hover:shadow-[0_8px_50px_rgba(193,68,14,0.7)] active:scale-95 group"
-			aria-label="Open chat"
-		>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				class="w-7 h-7 transition-transform group-hover:scale-110"
+
+{#if isCollapsed}
+		{#key "chat-button"}
+			<button
+				in:receive={{ key: 'chat-button' }}
+				out:send={{ key: 'chat-button' }}
+				onclick={() => {
+					if(isHidden){
+						alert("And there, stood a lonely eye, await acknowledgment....")
+					} else {
+						toggleCollapse()
+					}
+				}}
+				class="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-lava-glow 
+					flex items-center justify-center text-ash-light 
+					transition-all hover:scale-110 
+					hover:shadow-[0_8px_50px_rgba(193,68,14,0.7)] 
+					active:scale-95 group
+					{isHidden 
+						? 'ring-2 ring-lava-dark bg-lava-light/50 animate-pulse' 
+						: 'bg-lava-glow'}"
+				aria-label="Open chat"
 			>
-				<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-				<path d="M8 10h.01"></path>
-				<path d="M12 10h.01"></path>
-				<path d="M16 10h.01"></path>
-			</svg>
-			<span
-				class="absolute -top-1 -right-1 w-5 h-5 bg-green-400 rounded-full border-2 border-volcanic-obsidian flex items-center justify-center text-[10px] font-bold text-volcanic-obsidian animate-pulse"
-			>
-			</span>
-		</button>
-	{:else}
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="w-7 h-7 transition-transform group-hover:scale-110"
+				>
+					<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+					<path d="M8 10h.01"></path>
+					<path d="M12 10h.01"></path>
+					<path d="M16 10h.01"></path>
+				</svg>
+				{#if !isHidden}
+					<span
+						class="absolute -top-1 -right-1 w-5 h-5 bg-green-400 rounded-full border-2 border-volcanic-obsidian flex items-center justify-center text-[10px] font-bold text-volcanic-obsidian animate-pulse"
+					>
+					</span>
+				{/if}
+			</button>
+		{/key}
+{:else}
+	<div
+		class="fixed bottom-6 right-6 z-50 transition-all duration-300 ease-out animate-in slide-in-from-bottom-5 fade-in"
+	>
 		<div
-			class="fixed bottom-6 right-6 z-50 transition-all duration-300 ease-out animate-in slide-in-from-bottom-5 fade-in"
+			class="w-96 h-[600px] bg-volcanic-charcoal rounded-2xl shadow-volcanic-lg border border-volcanic-basalt flex flex-col overflow-hidden"
 		>
-			<div
-				class="w-96 h-[600px] bg-volcanic-charcoal rounded-2xl shadow-volcanic-lg border border-volcanic-basalt flex flex-col overflow-hidden"
-			>
-				<div class="bg-lava-glow px-6 py-4 flex items-center justify-between">
-					<div class="flex items-center gap-3">
-						<div
-							class="w-10 h-10 bg-volcanic-obsidian rounded-full flex items-center justify-center text-lava-light"
+			<div class="bg-lava-glow px-6 py-4 flex items-center justify-between">
+				<div class="flex items-center gap-3">
+					<div
+						class="w-10 h-10 bg-volcanic-obsidian rounded-full flex items-center justify-center text-lava-light"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="w-5 h-5"
 						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								class="w-5 h-5"
-							>
-								<path d="M12 8V4H8" />
-								<rect width="16" height="12" x="4" y="8" rx="2" />
-								<path d="M2 14h2" />
-								<path d="M20 14h2" />
-								<path d="M15 13v2" />
-								<path d="M9 13v2" />
-							</svg>
-						</div>
-						<div>
-							<h3 class="text-ash-light font-semibold text-lg">AI Assistant</h3>
-							<div class="flex items-center gap-1.5 text-xs text-ash-light/80">
-								<span
-									class="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.6)]"
-								></span>
-								<span>{isTyping ? 'Typing...' : 'Online'}</span>
-							</div>
-						</div>
+							<path d="M12 8V4H8" />
+							<rect width="16" height="12" x="4" y="8" rx="2" />
+							<path d="M2 14h2" />
+							<path d="M20 14h2" />
+							<path d="M15 13v2" />
+							<path d="M9 13v2" />
+						</svg>
 					</div>
-					<div class="flex items-center gap-2">
-						<button
-							onclick={toggleCollapse}
-							class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors text-ash-light"
-							aria-label="Minimize chat"
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								class="w-5 h-5"
-							>
-								<path d="M4 14h6v6" />
-								<path d="M20 10h-6V4" />
-								<path d="M14 10l7-7" />
-								<path d="M3 21l7-7" />
-							</svg>
-						</button>
-						<button
-							onclick={() => (isCollapsed = true)}
-							class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors text-ash-light"
-							aria-label="Close chat"
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								class="w-5 h-5"
-							>
-								<path d="M18 6 6 18" />
-								<path d="m6 6 12 12" />
-							</svg>
-						</button>
+					<div>
+						<h3 class="text-ash-light font-semibold text-lg">AI Assistant</h3>
+						<div class="flex items-center gap-1.5 text-xs text-ash-light/80">
+							<span
+								class="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.6)]"
+							></span>
+							<span>{isTyping ? 'Typing...' : 'Online'}</span>
+						</div>
 					</div>
 				</div>
-
-				<div
-					bind:this={messagesContainer}
-					class="flex-1 overflow-y-auto px-6 py-4 space-y-4 bg-volcanic-obsidian scroll-smooth"
-				>
-					{#each messages as message}
-						<div
-							class="flex gap-3 {message.role === 'user'
-								? 'flex-row-reverse'
-								: 'flex-row'} animate-in fade-in slide-in-from-bottom-2 duration-300"
+				<div class="flex items-center gap-2">
+					<button
+						onclick={toggleCollapse}
+						class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors text-ash-light"
+						aria-label="Minimize chat"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="w-5 h-5"
 						>
-							{#if message.role === 'assistant'}
-								<div
-									class="w-8 h-8 shrink-0 bg-lava-glow rounded-full flex items-center justify-center text-ash-light"
-								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										stroke-width="2"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										class="w-4 h-4"
-									>
-										<path d="M12 8V4H8" />
-										<rect width="16" height="12" x="4" y="8" rx="2" />
-										<path d="M2 14h2" />
-										<path d="M20 14h2" />
-										<path d="M15 13v2" />
-										<path d="M9 13v2" />
-									</svg>
-								</div>
-							{/if}
-							<div class="flex flex-col gap-1 max-w-[75%]">
-								<div
-									class="px-4 py-3 rounded-2xl {message.role === 'user'
-										? 'bg-lava-glow text-ash-light rounded-tr-sm'
-										: 'bg-volcanic-charcoal text-ash-light border border-volcanic-basalt rounded-tl-sm'}"
-								>
-									<div class="text-sm leading-relaxed formatted-content">
-										{@html formatMessage(message.content)}
-									</div>
-								</div>
-								<span
-									class="text-xs text-ash/60 {message.role === 'user'
-										? 'text-right'
-										: 'text-left'} px-2"
-								>
-									{message.timestamp}
-								</span>
-							</div>
-						</div>
-					{/each}
+							<path d="M4 14h6v6" />
+							<path d="M20 10h-6V4" />
+							<path d="M14 10l7-7" />
+							<path d="M3 21l7-7" />
+						</svg>
+					</button>
+					<button
+						onclick={() => (isCollapsed = true)}
+						class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors text-ash-light"
+						aria-label="Close chat"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="w-5 h-5"
+						>
+							<path d="M18 6 6 18" />
+							<path d="m6 6 12 12" />
+						</svg>
+					</button>
+				</div>
+			</div>
 
-					{#if isTyping}
-						<div class="flex gap-3 flex-row animate-in fade-in slide-in-from-bottom-2 duration-300">
+			<div
+				bind:this={messagesContainer}
+				class="flex-1 overflow-y-auto px-6 py-4 space-y-4 bg-volcanic-obsidian scroll-smooth"
+			>
+				{#each messages as message}
+					<div
+						class="flex gap-3 {message.role === 'user'
+							? 'flex-row-reverse'
+							: 'flex-row'} animate-in fade-in slide-in-from-bottom-2 duration-300"
+					>
+						{#if message.role === 'assistant'}
 							<div
 								class="w-8 h-8 shrink-0 bg-lava-glow rounded-full flex items-center justify-center text-ash-light"
 							>
@@ -319,45 +299,32 @@
 									<path d="M9 13v2" />
 								</svg>
 							</div>
-							<div class="flex flex-col gap-1 max-w-[75%]">
-								<div
-									class="px-4 py-3 rounded-2xl bg-volcanic-charcoal border border-volcanic-basalt rounded-tl-sm"
-								>
-									<div class="flex gap-1.5 items-center h-5">
-										<div
-											class="w-2 h-2 bg-lava-light rounded-full animate-bounce"
-											style="animation-delay: 0ms;"
-										></div>
-										<div
-											class="w-2 h-2 bg-lava-light rounded-full animate-bounce"
-											style="animation-delay: 150ms;"
-										></div>
-										<div
-											class="w-2 h-2 bg-lava-light rounded-full animate-bounce"
-											style="animation-delay: 300ms;"
-										></div>
-									</div>
+						{/if}
+						<div class="flex flex-col gap-1 max-w-[75%]">
+							<div
+								class="px-4 py-3 rounded-2xl {message.role === 'user'
+									? 'bg-lava-glow text-ash-light rounded-tr-sm'
+									: 'bg-volcanic-charcoal text-ash-light border border-volcanic-basalt rounded-tl-sm'}"
+							>
+								<div class="text-sm leading-relaxed formatted-content">
+									{@html formatMessage(message.content)}
 								</div>
 							</div>
+							<span
+								class="text-xs text-ash/60 {message.role === 'user'
+									? 'text-right'
+									: 'text-left'} px-2"
+							>
+								{message.timestamp}
+							</span>
 						</div>
-					{/if}
-				</div>
+					</div>
+				{/each}
 
-				<div class="px-4 py-4 bg-volcanic-charcoal border-t border-volcanic-basalt">
-					<div class="flex gap-2 items-end">
-						<textarea
-							bind:value={userInput}
-							onkeydown={handleKeydown}
-							placeholder="Type your message..."
-							rows="1"
-							disabled={isTyping}
-							class="flex-1 bg-volcanic-obsidian border border-volcanic-basalt text-ash-light px-4 py-3 rounded-xl resize-none focus:outline-none focus:border-lava focus:ring-2 focus:ring-lava/20 transition-all placeholder:text-ash/50 max-h-32 disabled:opacity-50 disabled:cursor-not-allowed"
-						></textarea>
-						<button
-							onclick={handleSend}
-							disabled={!userInput.trim() || isTyping}
-							class="w-11 h-11 shrink-0 bg-lava-glow rounded-xl flex items-center justify-center text-ash-light transition-all hover:shadow-lava-glow hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
-							title="The chatter"
+				{#if isTyping}
+					<div class="flex gap-3 flex-row animate-in fade-in slide-in-from-bottom-2 duration-300">
+						<div
+							class="w-8 h-8 shrink-0 bg-lava-glow rounded-full flex items-center justify-center text-ash-light"
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -367,48 +334,74 @@
 								stroke-width="2"
 								stroke-linecap="round"
 								stroke-linejoin="round"
-								class="w-5 h-5"
+								class="w-4 h-4"
 							>
-								<path d="m22 2-7 20-4-9-9-4Z" />
-								<path d="M22 2 11 13" />
+								<path d="M12 8V4H8" />
+								<rect width="16" height="12" x="4" y="8" rx="2" />
+								<path d="M2 14h2" />
+								<path d="M20 14h2" />
+								<path d="M15 13v2" />
+								<path d="M9 13v2" />
 							</svg>
-						</button>
+						</div>
+						<div class="flex flex-col gap-1 max-w-[75%]">
+							<div
+								class="px-4 py-3 rounded-2xl bg-volcanic-charcoal border border-volcanic-basalt rounded-tl-sm"
+							>
+								<div class="flex gap-1.5 items-center h-5">
+									<div
+										class="w-2 h-2 bg-lava-light rounded-full animate-bounce"
+										style="animation-delay: 0ms;"
+									></div>
+									<div
+										class="w-2 h-2 bg-lava-light rounded-full animate-bounce"
+										style="animation-delay: 150ms;"
+									></div>
+									<div
+										class="w-2 h-2 bg-lava-light rounded-full animate-bounce"
+										style="animation-delay: 300ms;"
+									></div>
+								</div>
+							</div>
+						</div>
 					</div>
+				{/if}
+			</div>
+
+			<div class="px-4 py-4 bg-volcanic-charcoal border-t border-volcanic-basalt">
+				<div class="flex gap-2 items-end">
+					<textarea
+						bind:value={userInput}
+						onkeydown={handleKeydown}
+						placeholder="Type your message..."
+						rows="1"
+						disabled={isTyping}
+						class="flex-1 bg-volcanic-obsidian border border-volcanic-basalt text-ash-light px-4 py-3 rounded-xl resize-none focus:outline-none focus:border-lava focus:ring-2 focus:ring-lava/20 transition-all placeholder:text-ash/50 max-h-32 disabled:opacity-50 disabled:cursor-not-allowed"
+					></textarea>
+					<button
+						onclick={handleSend}
+						disabled={!userInput.trim() || isTyping}
+						class="w-11 h-11 shrink-0 bg-lava-glow rounded-xl flex items-center justify-center text-ash-light transition-all hover:shadow-lava-glow hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
+						title="The chatter"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="w-5 h-5"
+						>
+							<path d="m22 2-7 20-4-9-9-4Z" />
+							<path d="M22 2 11 13" />
+						</svg>
+					</button>
 				</div>
 			</div>
 		</div>
-	{/if}
-{:else}
-	<button
-		onclick={toggleCollapse}
-		class="fixed bottom-6 right-6 z-50 w-16 h-16 bg-lava-glow/50 rounded-full shadow-lava-glow flex items-center justify-center text-ash-light transition-all hover:scale-110 hover:shadow-[0_8px_50px_rgba(193,68,14,0.7)] active:scale-95 group"
-		disabled
-		aria-label="Open chat"
-	>
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			stroke-width="2"
-			stroke-linecap="round"
-			stroke-linejoin="round"
-			class="w-7 h-7 transition-transform group-hover:scale-110"
-		>
-			<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-			<path d="M8 10h.01"></path>
-			<path d="M12 10h.01"></path>
-			<path d="M16 10h.01"></path>
-		</svg>
-		<span
-			class="absolute bottom-20 right-1/2 -translate-y-1/2 bg-lava-light text-volcanic-obsidian px-3 py-1 rounded
-                 text-sm whitespace-nowrap
-                 opacity-0 group-hover:opacity-100 transition-opacity duration-300
-                 pointer-events-none"
-		>
-			And there, stood a lonely eye....
-		</span>
-	</button>
+	</div>
 {/if}
 
 <style>
