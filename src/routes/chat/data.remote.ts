@@ -46,6 +46,8 @@ export const sendMessage = command(SendMessageSchema, async ({ query }) => {
 		);
 
 		await redis?.set(key as string, JSON.stringify(existing));
+		await redis?.expire(key as string, 60 * 60 * 24 * 7);
+
 		return {
 			role: 'assistant',
 			content: existingResponse.data[0].response,
@@ -126,7 +128,11 @@ export const sendMessage = command(SendMessageSchema, async ({ query }) => {
 	if (openaiResponse.output_text) {
 		langcache?.set({
 			prompt: query,
-			response: openaiResponse.output_text || "Sorry, I couldn't generate a response."
+			response: openaiResponse.output_text || "Sorry, I couldn't generate a response.",
+			attributes: {
+				createdAt: new Date().toDateString()
+			},
+			ttlMillis: 7 * 24 * 60 * 60 * 1000
 		});
 
 		history.push(
@@ -141,6 +147,7 @@ export const sendMessage = command(SendMessageSchema, async ({ query }) => {
 		if (history.length > 20) history = history.slice(-20);
 
 		await redis?.set(key as string, JSON.stringify(history));
+		await redis?.expire(key as string, 60 * 60 * 24 * 7);
 	}
 
 	return {

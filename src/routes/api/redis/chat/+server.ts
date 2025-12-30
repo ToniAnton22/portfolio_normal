@@ -33,5 +33,7 @@ export const POST: RequestHandler = async ({ cookies, request }) => {
 	}
 	const data = await redis?.set(key, requestData);
 
+	await redis?.expire(key, 60 * 60 * 24 * 7);
+
 	return json({ data, message: 'Success', success: true }, { status: 200 });
 };

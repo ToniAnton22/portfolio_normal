@@ -70,12 +70,10 @@
 
 			try {
 				const response = await sendMessage({ query: previousInput });
-
 				if (!response) {
 					userInput = previousInput;
-					messages.pop(); 
+					messages.pop();
 				} else {
-
 					messages.push({
 						role: 'assistant',
 						content: response.content || response,
@@ -90,10 +88,10 @@
 				console.error('Error sending message:', error);
 				userInput = previousInput;
 				messages.pop();
+				alert('An error has occured, please try again later.');
 			} finally {
 				isTyping = false;
 				await scrollToBottom();
-				alert("An error has occured, please try again later.")
 			}
 		}
 	}

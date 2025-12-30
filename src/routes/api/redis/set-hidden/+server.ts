@@ -9,8 +9,14 @@ export const PUT: RequestHandler = async ({ cookies, request }) => {
 			return error(500, { message: "Couldn't fetch chat data.", success: false });
 		}
 		const key = cookies.get('key');
-		const data = await redis?.set(`${key}-hidden`, hidden.toString());
-
+		const data = await redis?.set(
+			`${key}-hidden`,
+			JSON.stringify({
+				hidden,
+				createdAt: new Date().toISOString()
+			})
+		);
+		await redis?.expire(`${key}-hidden`, 60 * 60 * 24 * 7);
 		return json({ data, message: 'Success', success: true }, { status: 200 });
 	} catch (e) {
 		console.error(e);
