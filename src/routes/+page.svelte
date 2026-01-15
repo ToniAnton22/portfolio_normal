@@ -10,7 +10,7 @@
 	
 	let {data} = $props()
 	// svelte-ignore state_referenced_locally
-	let isHidden = $derived(data.isHidden)
+	let isHidden = $derived(false)
 </script>
 
 <Navigation />
