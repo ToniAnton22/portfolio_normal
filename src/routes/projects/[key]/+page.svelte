@@ -41,14 +41,6 @@
 			: '';
 </script>
 
-<a 
-	href="javascript:history.back()" 
-	class="absolute top-4 left-4 z-30 inline-flex items-center gap-2 px-3 py-2 text-ash hover:text-lava transition-colors duration-200"
-	aria-label="Go back"
->
-	<span aria-hidden="true">←</span>
-	<span>Back</span>
-</a>
 {#if !project}
 	<section class="mx-auto max-w-4xl px-6 py-20 text-ash">
 		<h1 class="text-3xl font-bold text-lava">Project not found</h1>
@@ -56,7 +48,7 @@
 	</section>
 {:else}
 	<section class="relative overflow-hidden bg-volcanic-obsidian">
-		<!-- HERO -->
+
 		<header class="relative">
 			<div
 				class="absolute inset-0 bg-center bg-cover"
@@ -89,7 +81,7 @@
 						{project.description}
 					</p>
 
-					<!-- actions -->
+		
 					<div class="flex flex-wrap items-center gap-3 pt-2">
 						{#if project.extras.demoLink}
 							<a
@@ -130,10 +122,10 @@
 			</div>
 		</header>
 
-		<!-- CONTENT -->
+
 		<main class="mx-auto max-w-6xl px-6 pb-24">
 			<div class="grid gap-10 lg:grid-cols-12">
-				<!-- Left: Highlights + README -->
+			
 				<div class="lg:col-span-8 space-y-10">
 					{#if project.highlights?.length}
 						<section class="card-volcanic p-8">
@@ -162,7 +154,7 @@
 								No README has been added for this project yet.
 							</p>
 						{:else}
-							<!-- Rendered Markdown -->
+					
 							<article class="prose prose-invert mt-6 max-w-none prose-headings:text-ash-light prose-a:text-earth prose-strong:text-ash-light">
 								{@html readmeHtml}
 							</article>
@@ -170,7 +162,7 @@
 					</section>
 				</div>
 
-				<!-- Right: Skills + Stack -->
+				
 				<aside class="lg:col-span-4 space-y-6">
 					{#if project.skills?.length}
 						<section class="card-volcanic p-8">
