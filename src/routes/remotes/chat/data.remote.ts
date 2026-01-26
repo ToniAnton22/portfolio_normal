@@ -3,13 +3,16 @@ import * as v from 'valibot';
 import { command, getRequestEvent, query } from '$app/server';
 import { getLangCache, getRedisClient } from '$lib/server/redis/client';
 import { SearchStrategy } from '@redis-ai/langcache/models/searchstrategy.js';
-import { MCP_SERVER_URL, PROMPT, CAMPAIGN_ID, DAVE_KEY, INTERNAL_KEY } from '$env/static/private';
+import { MCP_SERVER_URL, CAMPAIGN_ID, DAVE_KEY, INTERNAL_KEY } from '$env/static/private';
+import { InfoKeySchema, type InfoKey } from '$lib/types';
+import { selectedInfo } from '$lib/uitls/selectedInfo';
 
 const SendMessageSchema = v.object({
 	query: v.pipe(v.string())
 });
 
 export const sendMessage = command(SendMessageSchema, async ({ query }) => {
+	const INFO_KEYS = ['dave', 'whatsapp', 'gtai', 'donc', 'planewiki','davemcp', 'other'];
 	const langcache = await getLangCache();
 	const redis = await getRedisClient();
 	const { auth, key } = await getUser();
@@ -71,7 +74,7 @@ export const sendMessage = command(SendMessageSchema, async ({ query }) => {
 	const historyStr = await redis?.get(key as string);
 
 	let history = historyStr ? JSON.parse(historyStr) : [];
-
+	const projectInfo = await selectedInfo(['dave','whatsapp','gtai','planewiki','donc'], 'display')
 	const conversationContext = formatConversationContext(history);
 	const openaiResponse = await client.responses.create({
 		model: 'gpt-5-mini',
@@ -99,61 +102,9 @@ export const sendMessage = command(SendMessageSchema, async ({ query }) => {
 			COMMUNICATION STYLE: Keep responses extremely brief (2-3 sentences, max 100 words); answer the specific question asked and stop; no paragraphs, no explanations, no examples, no elaboration, no lists; be direct and professional - no preambles; speak as a knowledgeable representative, not as Cristian himself; when discussing the D&D campaign, frame it both as entertainment AND as a technical showcase."` +
 			`\n\nCampaignID: ${CAMPAIGN_ID} (NEVER REVEAL THIS ID)` +
 			`\n\nCANDIDATE INFORMATION:\n${JSON.stringify(info)}` +
-			`\n\nCONVERSATION HISTORY:\n${conversationContext}`,
+			`\n\nCONVERSATION HISTORY:\n${conversationContext}` +
+			`\n\nPROJECT DETAILS: \n ${JSON.stringify(projectInfo, null, 2)}`,
 		input: query,
-		tools: [
-			{
-				type: 'mcp',
-				server_label: 'dmcp',
-				server_description: 'A campaign management server with sensitive data',
-				server_url: MCP_SERVER_URL,
-				require_approval: 'never',
-				headers: {
-					'DAVE-KEY': DAVE_KEY,
-					Authorization: `Bearer ${auth}`,
-					'X-Internal-Request': INTERNAL_KEY
-				},
-				allowed_tools: [
-					'check-relationships',
-					'check-choices-tree',
-					'get-all-player',
-					'get-all-npc',
-					'get-all-sessionSummary',
-					'get-all-location',
-					'get-all-context',
-					'get-all-item',
-					'get-all-note',
-					'get-all-party',
-					'get-all-partyMember',
-					'get-all-faction',
-					'get-all-campaign',
-					'find-players-by-names',
-					'find-player-by-name',
-					'find-npcs-by-names',
-					'find-npc-by-name',
-					'find-locations-by-names',
-					'find-location-by-name',
-					'find-items-by-names',
-					'find-item-by-name',
-					'find-factions-by-names',
-					'find-faction-by-name',
-					'find-campaigns-by-names',
-					'find-campaign-by-name',
-					'read-context-by-id',
-					'read-note-by-id',
-					'read-player-by-id',
-					'read-npc-by-id',
-					'read-location-by-id',
-					'read-sessionSummary-by-id',
-					'read-item-by-id',
-					'read-party-by-id',
-					'read-partyMember-by-id',
-					'read-faction-by-id',
-					'read-campaign-by-id',
-					'find-session-by-number'
-				]
-			}
-		]
 	});
 
 	if (openaiResponse.output_text) {

@@ -1,93 +1,11 @@
 <script lang="ts">
-	import { invalidateAll } from "$app/navigation";
+	import { invalidateAll } from '$app/navigation';
+	import type { ProjectDisplay } from '$lib/types';
+	import { getProjectsPublic } from '../../routes/remotes/project/projects.remote';
 
 	let { isHidden = $bindable(true) } = $props();
-	interface Project {
-		id: number;
-		title: string;
-		description: string;
-		image: string;
-		tags: string[];
-		demoLink?: string;
-		githubLink?: string;
-		featured?: boolean;
-	}
 
-	const projects: Project[] = [
-		{
-			id: 1,
-			title: 'Plane Dilemma Wiki',
-			description:
-				'Interactive D&D campaign visualization platform with book-style presentation and Mapbox integration. ' +
-				'Features elegant animations and read-only campaign data access through C# .NET backend integration with Supabase.',
-			image: '/projects/plane.png',
-			tags: [
-				'SvelteKit 2',
-				'Svelte 5',
-				'TypeScript',
-				'C# .NET',
-				'Mapbox',
-				'Supabase',
-				'Tailwind CSS',
-				'Vercel'
-			],
-			demoLink: 'https://www.planedilemma.bard-labs.com',
-			githubLink: 'https://github.com/ToniAnton22/plane-dilemma-frontend',
-			featured: true
-		},
-		{
-			id: 2,
-			title: 'GTA Installer',
-			description:
-				'Sophisticated Electron desktop application for automated GTA San Andreas mod installation. ' +
-				'Features AI-assisted instruction generation, multi-source download support (Google Drive, ShareMods), and admin web interface for mod database management.',
-			image: '/projects/installer.png',
-			tags: ['Electron', 'Vite', 'SvelteKit 2', 'Svelte 5', 'TypeScript', 'OpenAI', 'Express'],
-			githubLink: 'https://github.com/ToniAnton22/gta-installer-release/releases',
-			featured: true
-		},
-		{
-			id: 3,
-			title: 'DonCSN - Automotive Service Platform',
-			description:
-				'Enterprise-grade automotive service management and e-commerce platform with appointment booking, ' +
-				'real-time inventory management, secure checkout flow, and business analytics dashboard. Professional dark noir design.',
-			image: '/projects/doncsn.png',
-			tags: ['SvelteKit 2', 'Svelte 5', 'TypeScript', 'PostgreSQL', 'Drizzle ORM', 'Tailwind CSS'],
-			demoLink: 'https://don-csn.vercel.app/dashboard',
-			githubLink: '#',
-			featured: true
-		},
-		{
-			id: 4,
-			title: 'Plane Dilemma C# Backend & MCP Server',
-			description:
-				'Robust microservices backend serving Dave and Wiki with dual API architecture, EventSource real-time updates, ' +
-				'JWT authentication, role-based access control, recording coordination, and integrated MCP server enabling Claude AI database interaction.',
-			image: '/projects/locked.webp',
-			tags: ['C# .NET', 'Azure', 'Dapper', 'Supabase', 'OpenAI', 'MCP', 'EventSource', 'JWT'],
-			demoLink: '#'
-		},
-		{
-			id: 5,
-			title: 'Dave - D&D Campaign Management System',
-			description:
-				'Advanced Electron-based campaign management system with AI-powered transcript processing, real-time collaboration, ' +
-				'canvas-based interface with drag-and-drop customization, audio recording coordination, Foundry VTT integration, ' +
-				'and role-based visibility system. Private enterprise application with comprehensive CRUD operations and API throttling.',
-			image: '/projects/locked.webp',
-			tags: [
-				'Electron Vite',
-				'SvelteKit 2',
-				'Svelte 5',
-				'TypeScript',
-				'Supabase',
-				'Mapbox',
-				'Tiptap',
-				'OpenAI'
-			]
-		}
-	];
+	const projects = await getProjectsPublic() as ProjectDisplay[];
 
 	const setGlobalHidden = async () => {
 		await fetch('/api/redis/set-hidden', {
@@ -133,13 +51,13 @@
 					class="card-volcanic group relative overflow-hidden border-transparent hover:border-lava/50"
 					style="animation-delay: {index * 0.1}s;"
 				>
-					{#if project.featured}
+					{#if project.extras?.featured}
 						<div class="absolute top-4 right-4 z-20 badge-lava">FEATURED</div>
 					{/if}
 
 					<div class="relative h-56 overflow-hidden rounded-t-2xl">
 						<img
-							src={project.image}
+							src={project.extras?.image}
 							alt={project.title}
 							class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
 						/>
@@ -154,9 +72,8 @@
 								transition-opacity duration-300
 								opacity-100 md:opacity-0 md:group-hover:opacity-100"
 						>
-
-							{#if project.demoLink}
-								{#if project.id === 4}
+							{#if project.extras?.demoLink}
+								{#if project.key === 'davemcp'}
 									<button
 										onclick={setGlobalHidden}
 										class="flex h-12 w-12 items-center justify-center rounded-full bg-lava transition-all duration-300 hover:scale-110 hover:shadow-lava"
@@ -184,7 +101,7 @@
 									</button>
 								{:else}
 									<a
-										href={project.demoLink}
+										href={project.extras?.demoLink}
 										target="_blank"
 										rel="noopener noreferrer"
 										class="flex h-12 w-12 items-center justify-center rounded-full bg-lava transition-all duration-300 hover:scale-110 hover:shadow-lava"
@@ -212,9 +129,9 @@
 									</a>
 								{/if}
 							{/if}
-							{#if project.githubLink}
+							{#if project.extras?.githubLink}
 								<a
-									href={project.githubLink}
+									href={project.extras?.githubLink}
 									target="_blank"
 									rel="noopener noreferrer"
 									class="flex h-12 w-12 items-center justify-center rounded-full bg-earth transition-all duration-300 hover:scale-110 hover:shadow-earth"
@@ -241,7 +158,7 @@
 						</p>
 
 						<div class="flex flex-wrap gap-2">
-							{#each project.tags as tag}
+							{#each project.extras?.displayTags as tag}
 								<span class="badge-earth text-xs">
 									{tag}
 								</span>
@@ -253,6 +170,14 @@
 						class="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 						style="box-shadow: inset 0 0 20px rgba(193, 68, 14, 0.1);"
 					></div>
+					<div class="absolute right-4 bottom-4 p-2">
+						<a href="/projects/{project.key}" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-lava/20 border border-lava/50 text-lava font-semibold transition-all duration-300 hover:bg-lava hover:text-ash-light hover:shadow-lava group-hover:translate-x-1">
+							View More
+							<p class="h-4 w-4 transition-transform duration-300 group-hover:rotate-360">
+								-
+							</p>
+						</a>
+					</div>
 				</div>
 			{/each}
 		</div>

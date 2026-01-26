@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	import { sendMessage, getMessages } from '../../routes/chat/data.remote';
+	import { sendMessage, getMessages } from '../../routes/remotes/chat/data.remote';
 	import { crossfade } from 'svelte/transition';
 	import {quintOut} from 'svelte/easing'
+	import type { InfoKey } from '$lib/types';
 
 	interface Message {
 		role: 'user' | 'assistant';
@@ -14,7 +15,6 @@
 		easing: quintOut
 	})
 	let { isHidden = $bindable(true) } = $props();
-
 	let isCollapsed = $state(true);
 	let isTyping = $state(false);
 	let messagesContainer: HTMLDivElement | undefined = $state();
