@@ -1,6 +1,12 @@
 import { dev } from '$app/environment';
-import { DAVE_KEY, INTERNAL_KEY, PLANE_SERVER_URL, PREVIEW_PASSWORD, PREVIEW_USERNAME } from '$env/static/private';
-import type { ServerLoad } from '@sveltejs/kit';
+import {
+	DAVE_KEY,
+	INTERNAL_KEY,
+	PLANE_SERVER_URL,
+	PREVIEW_PASSWORD,
+	PREVIEW_EMAIL
+} from '$env/static/private';
+import type { Cookies, ServerLoad } from '@sveltejs/kit';
 import { randomUUID } from 'crypto';
 
 export const load: ServerLoad = async ({ cookies }) => {
@@ -25,15 +31,16 @@ const verifyTokenForMcp = async (token: string, cookies: Cookies) => {
 				'X-Internal-Request': INTERNAL_KEY
 			},
 			body: JSON.stringify({
-				username: PREVIEW_USERNAME,
+				email: PREVIEW_EMAIL,
 				password: PREVIEW_PASSWORD,
 				role: 'Previewer'
 			})
 		});
+
 		if (result.status != 200) {
 			throw new Error('Failed to Login.');
 		}
-		token = (await result.json()).token as string;
+		token = (await result.json()).accessToken as string;
 		const decoded = decodeJWT(token);
 		if (!decoded) {
 			throw new Error('Decoding failed. Invalid return');
@@ -69,19 +76,19 @@ const verifyTokenForMcp = async (token: string, cookies: Cookies) => {
 			},
 			method: 'POST',
 			body: JSON.stringify({
-				username: PREVIEW_USERNAME,
+				email: PREVIEW_EMAIL,
 				password: PREVIEW_PASSWORD,
 				role: 'Previewer'
 			})
 		});
-		token = (await result.json()).token as string;
+		token = (await result.json()).accessToken as string;
 		const decoded = decodeJWT(token);
 		cookies.set('token', token, {
 			expires: decoded?.expiresAt,
 			path: '/',
 			secure: !dev
 		});
-
+	
 		return token;
 	}
 };
@@ -90,6 +97,7 @@ interface DecodedToken {
 	userId: string;
 	name: string;
 	role: string;
+	email: string;
 	lastLoginAt: string | null;
 	campaignId: string | null;
 	exp: number;
@@ -104,17 +112,22 @@ function decodeJWT(token: string): DecodedToken | null {
 	try {
 		const payload = token.split('.')[1];
 		const decoded = JSON.parse(atob(payload));
-
 		const now = Date.now() / 1000;
 		const exp = decoded.exp;
 		const timeUntilExpiry = exp - now;
 
+		// Supabase JWT structure
 		return {
-			userId: decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
-			name: decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
-			role: decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || 'Player',
-			lastLoginAt: decoded.LastLoginAt || null,
-			campaignId: decoded.Campaign || null,
+			userId: decoded.sub || decoded.user_id,
+			name:
+				decoded.username ||
+				decoded.user_metadata?.username ||
+				decoded.email?.split('@')[0] ||
+				'User',
+			role: decoded.app_role || decoded.user_metadata?.role || 'Player',
+			email: decoded.email,
+			lastLoginAt: decoded.last_login_at || decoded.user_metadata?.last_login_at || null,
+			campaignId: decoded.campaign_id || decoded.user_metadata?.campaign_id || null,
 			exp: exp,
 			expiresAt: new Date(exp * 1000),
 			timeUntilExpiry: timeUntilExpiry,
@@ -132,4 +145,3 @@ function decodeJWT(token: string): DecodedToken | null {
 		return null;
 	}
 }
-
