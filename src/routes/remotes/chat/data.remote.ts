@@ -178,7 +178,7 @@ export const sendMessage = command(SendMessageSchema, async ({ query }) => {
 			timestamp: new Date().toISOString()
 		};
 	} catch (e) {
-		console.warn(e)
+		console.warn(e);
 		return {
 			role: 'assistant',
 			content:
