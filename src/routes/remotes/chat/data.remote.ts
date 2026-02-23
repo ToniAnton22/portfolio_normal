@@ -139,43 +139,53 @@ export const sendMessage = command(SendMessageSchema, async ({ query }) => {
 			]
 		: [];
 
-	const openaiResponse = await client.responses.create({
-		model: 'gpt-5-mini',
-		instructions: promptConfig.instructions,
-		input: query,
-		tools
-	});
-
-	if (openaiResponse.output_text) {
-		langcache?.set({
-			prompt: query,
-			response: openaiResponse.output_text || "Sorry, I couldn't generate a response.",
-			attributes: {
-				createdAt: new Date().toDateString()
-			},
-			ttlMillis: 7 * 24 * 60 * 60 * 1000
+	try {
+		const openaiResponse = await client.responses.create({
+			model: 'gpt-5-mini',
+			instructions: promptConfig.instructions,
+			input: query,
+			tools
 		});
 
-		history.push(
-			{ role: 'user', content: query, timestamp: new Date().toISOString() },
-			{
-				role: 'assistant',
-				content: openaiResponse.output_text,
-				timestamp: new Date().toISOString()
-			}
-		);
+		if (openaiResponse.output_text) {
+			langcache?.set({
+				prompt: query,
+				response: openaiResponse.output_text || "Sorry, I couldn't generate a response.",
+				attributes: {
+					createdAt: new Date().toDateString()
+				},
+				ttlMillis: 7 * 24 * 60 * 60 * 1000
+			});
 
-		if (history.length > 20) history = history.slice(-20);
+			history.push(
+				{ role: 'user', content: query, timestamp: new Date().toISOString() },
+				{
+					role: 'assistant',
+					content: openaiResponse.output_text,
+					timestamp: new Date().toISOString()
+				}
+			);
 
-		await redis?.set(key as string, JSON.stringify(history));
-		await redis?.expire(key as string, 60 * 60 * 24 * 7);
+			if (history.length > 20) history = history.slice(-20);
+
+			await redis?.set(key as string, JSON.stringify(history));
+			await redis?.expire(key as string, 60 * 60 * 24 * 7);
+		}
+
+		return {
+			role: 'assistant',
+			content: openaiResponse.output_text || "Sorry, I couldn't generate a response.",
+			timestamp: new Date().toISOString()
+		};
+	} catch (e) {
+		console.warn(e)
+		return {
+			role: 'assistant',
+			content:
+				'Something went wrong with generating the response. Please allow me to send this to the admin to investigate',
+			timestamp: new Date().toISOString()
+		};
 	}
-
-	return {
-		role: 'assistant',
-		content: openaiResponse.output_text || "Sorry, I couldn't generate a response.",
-		timestamp: new Date().toISOString()
-	};
 });
 
 const getUser = query(async () => {

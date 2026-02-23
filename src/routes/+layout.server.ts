@@ -16,7 +16,11 @@ export const load: ServerLoad = async ({ cookies }) => {
 		cookies.set('key', randomUUID(), { path: '/' });
 	}
 
-	await verifyTokenForMcp(cookies.get('token') ?? '', cookies);
+	try {
+		await verifyTokenForMcp(cookies.get('token') ?? '', cookies);
+	} catch (e) {
+		console.warn("We couldn't establish a user in the database. DND fetching won't work.", e)
+	}
 
 	return {};
 };
@@ -88,7 +92,7 @@ const verifyTokenForMcp = async (token: string, cookies: Cookies) => {
 			path: '/',
 			secure: !dev
 		});
-	
+
 		return token;
 	}
 };
